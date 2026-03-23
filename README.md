@@ -28,12 +28,12 @@ Custom Marlin firmware build for the **Sovol SV05** 3D printer fitted with a **C
 | Hotend PID | Kp 17.62 / Ki 1.42 / Kd 54.63 | Tuned via M303 E0 S210 C15 on Sprite Pro |
 | Bed heater | Bang-bang + BED_LIMIT_SWITCHING | Appropriate for large 235×235 bed |
 | E-steps | 439.45 | Starting point — calibrate after flashing |
-| Probe X offset | -49.3 mm | Slim CR Touch mount |
-| Probe Y offset | 0 mm | |
+| Probe X offset | -37.5 mm | Measured by centering probe over bed |
+| Probe Y offset | +6.2 mm | Measured by centering probe over bed |
 | Probe Z offset | -2.06 mm | Calibrate with M851 after flashing |
 | Bed size | 220 × 220 × 300 mm | |
 | Homing | X/Y home to MAX (rear-right) | Z homes to MIN |
-| Probing margin | L:10 F:10 R:50 B:10 mm | Asymmetric — right constrained by -49.3mm X probe offset |
+| Probing margin | L:10 F:10 R:40 B:10 mm | Asymmetric — right constrained by -37.5mm X probe offset |
 | Probe low point | -5 mm | Extra travel margin before probing fails |
 | Bed levelling | Bilinear 5×5, double-probing | Each point probed twice and averaged |
 | Linear Advance | K = 0.09 | Tune after e-step calibration |

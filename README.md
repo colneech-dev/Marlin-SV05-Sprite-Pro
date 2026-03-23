@@ -25,6 +25,8 @@ Custom Marlin firmware build for the **Sovol SV05** 3D printer fitted with a **C
 | Board | `BOARD_CREALITY_V4` | V4.2.2 STM32F103RE |
 | Thermistor | Type 5 (ATC Semitec 104GT-2) | Sprite Pro 300°C version (thick red wiring) |
 | Max hotend temp | 300°C | |
+| Hotend PID | Kp 17.62 / Ki 1.42 / Kd 54.63 | Tuned via M303 E0 S210 C15 on Sprite Pro |
+| Bed heater | Bang-bang + BED_LIMIT_SWITCHING | Appropriate for large 235×235 bed |
 | E-steps | 439.45 | Starting point — calibrate after flashing |
 | Probe X offset | -49.3 mm | Slim CR Touch mount |
 | Probe Y offset | 0 mm | |
@@ -32,7 +34,8 @@ Custom Marlin firmware build for the **Sovol SV05** 3D printer fitted with a **C
 | Bed size | 220 × 220 × 300 mm | |
 | Homing | X/Y home to MAX (rear-right) | Z homes to MIN |
 | Probing margin | L:10 F:10 R:50 B:10 mm | Asymmetric — right constrained by -49.3mm X probe offset |
-| Bed levelling | Bilinear 5×5 | |
+| Probe low point | -5 mm | Extra travel margin before probing fails |
+| Bed levelling | Bilinear 5×5, double-probing | Each point probed twice and averaged |
 | Linear Advance | K = 0.09 | Tune after e-step calibration |
 | Input shaping | 40 Hz / zeta 0.15 | Tune with ringing tower after flashing |
 
@@ -40,7 +43,7 @@ Custom Marlin firmware build for the **Sovol SV05** 3D printer fitted with a **C
 
 ## Features Enabled
 
-- Auto Bed Levelling (bilinear 5×5 mesh)
+- Auto Bed Levelling (bilinear 5×5 mesh, double-probing for accuracy)
 - Probe-assisted bed tramming (CR Touch guides corner adjustment)
 - Restore levelling after G28
 - Babystepping (always available, 0.05mm per click)

@@ -31,7 +31,7 @@ Custom Marlin firmware build for the **Sovol SV05** 3D printer fitted with a **C
 | Probe Z offset | -2.06 mm | Calibrate with M851 after flashing |
 | Bed size | 220 × 220 × 300 mm | |
 | Homing | X/Y home to MAX (rear-right) | Z homes to MIN |
-| Probing margin | 55 mm | Required for -49.3mm X probe offset |
+| Probing margin | L:10 F:10 R:50 B:10 mm | Asymmetric — right constrained by -49.3mm X probe offset |
 | Bed levelling | Bilinear 5×5 | |
 | Linear Advance | K = 0.09 | Tune after e-step calibration |
 | Input shaping | 40 Hz / zeta 0.15 | Tune with ringing tower after flashing |

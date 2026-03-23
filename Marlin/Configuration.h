@@ -1528,7 +1528,13 @@
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 55 // Accounts for CR Touch X offset of -49.3mm; keeps nozzle within bed during G29
+// Per-side margins account for CR Touch X offset of -49.3mm (probe is LEFT of nozzle):
+//   Right: nozzle at X=220 puts probe at X=170.7 — PROBING_MARGIN_RIGHT must be >= 50
+//   Left/Front/Back: no offset constraint, small margin is fine
+#define PROBING_MARGIN_LEFT   10  // probe can reach X=10 (nozzle at X=59.3)
+#define PROBING_MARGIN_RIGHT  50  // nozzle would exceed X_MAX=220 if probe goes past X=170
+#define PROBING_MARGIN_FRONT  10
+#define PROBING_MARGIN_BACK   10
 
 // X and Y axis travel speed (mm/min) between probes
 #define XY_PROBE_FEEDRATE (133*60)
@@ -2086,7 +2092,7 @@
 #define LCD_BED_TRAMMING
 
 #if ENABLED(LCD_BED_TRAMMING)
-  #define BED_TRAMMING_INSET_LFRB { 55, 55, 55, 55 }  // (mm) Left, Front, Right, Back insets - must be >= PROBING_MARGIN (55) for probe-assisted tramming
+  #define BED_TRAMMING_INSET_LFRB { 10, 10, 50, 10 }  // (mm) Left, Front, Right, Back — Right=50 due to CR Touch X offset constraint
   #define BED_TRAMMING_HEIGHT      0.0        // (mm) Z height of nozzle at tramming points
   #define BED_TRAMMING_Z_HOP       4.0        // (mm) Z raise between tramming points
   //#define BED_TRAMMING_INCLUDE_CENTER       // Move to the center after the last corner

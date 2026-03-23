@@ -1524,7 +1524,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -37.5, 6.2, -2.06 } // CR Touch on Sprite Pro slim mount — measured by centering probe over bed
+#define NOZZLE_TO_PROBE_OFFSET { -37.5, 6.2, -3.825 } // CR Touch on Sprite Pro slim mount — XY measured by centering probe, Z calibrated with paper test
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.

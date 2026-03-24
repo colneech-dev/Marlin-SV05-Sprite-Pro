@@ -361,6 +361,46 @@ M500
 
 ---
 
+## Slicer Profiles
+
+Ready-made profiles are included for three slicers:
+
+### PrusaSlicer — [`prusaslicer/`](prusaslicer/)
+
+Import via **File → Import → Import Config**. Import in this order:
+1. `Sovol SV05 Sprite Pro.ini` — printer
+2. `filament_PLA.ini`, `filament_PETG.ini`, `filament_TPU.ini` — filaments
+3. Print profiles — select what you need
+
+| Print profile | Use |
+|---|---|
+| SV05 PLA 0.1mm | Fine detail |
+| SV05 PLA 0.2mm | Everyday |
+| SV05 PLA 0.3mm | Fast/functional |
+| SV05 PETG 0.1mm | Fine detail |
+| SV05 PETG 0.2mm | Everyday |
+| SV05 PETG 0.3mm | Fast/functional |
+| SV05 TPU 0.2mm | Flexible |
+
+### OrcaSlicer — [`orcaslicer/`](orcaslicer/)
+
+Import via **File → Import Configs** and point it at the `orcaslicer/` folder. OrcaSlicer will pick up machine, process, and filament profiles automatically.
+
+Same print profiles as PrusaSlicer. Includes `pressure_advance: 0.09` matching the firmware Linear Advance K value.
+
+### Cura — [`cura/`](cura/)
+
+Copy `Sovol SV05 Sprite Pro.def.json` to your Cura `definitions/` folder:
+- Windows: `%AppData%\cura\<version>\definitions\`
+- Then restart Cura and add the printer via **Add Printer → Custom FFF**
+
+All profiles include:
+- Start G-code: home → restore bed mesh (`M420 S1`) → heat → purge line → wipe
+- End G-code: retract → lift → park at front → heaters/fan/motors off
+- Temperatures pulled from the selected filament profile automatically
+
+---
+
 ## Custom Screen Images
 
 To replace the boot/status screen bitmaps:

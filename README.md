@@ -30,7 +30,7 @@ Custom Marlin firmware build for the **Sovol SV05** 3D printer fitted with a **C
 | E-steps | 439.45 | Starting point — calibrate after flashing |
 | Probe X offset | -37.5 mm | Measured by centering probe over bed |
 | Probe Y offset | +6.2 mm | Measured by centering probe over bed |
-| Probe Z offset | -3.825 mm | Calibrated with paper test |
+| Probe Z offset | -4.275 mm | Calibrated with live baby-step tuning |
 | Bed size | 220 × 220 × 300 mm | |
 | Homing | X/Y home to MAX (rear-right) | Z homes to MIN |
 | Probing margin | L:10 F:10 R:40 B:10 mm | Asymmetric — right constrained by -37.5mm X probe offset |
@@ -336,14 +336,21 @@ Before starting your first real print:
 **Recommended slicer start G-code:**
 
 ```gcode
-G28              ; home all axes
-M420 S1          ; restore saved bed mesh from EEPROM
-G1 Z5 F3000      ; lift nozzle
-G1 X5 Y5 F3000   ; move to front corner
-G1 Z0.3 F300     ; drop to purge height
-G1 X60 E9 F500   ; purge line
-G1 X100 E3 F500  ; wipe
-G1 Z2 F3000      ; lift before print starts
+M140 S[bed_temp]       ; start bed heating
+M104 S150              ; preheat hotend (no ooze)
+G28                    ; home all axes
+M420 S1                ; restore saved bed mesh from EEPROM
+M109 S[hotend_temp]    ; wait for hotend temp
+M190 S[bed_temp]       ; wait for bed temp
+G1 Z5 F3000            ; lift nozzle
+G1 X0 Y-1 F3000        ; move to front edge (outside print area)
+G1 Z0.3 F300           ; drop to purge height
+G92 E0                 ; reset extruder
+G1 X220 E20 F500       ; purge line — left to right (full bed width)
+G1 X0 E40 F500         ; purge line — right to left
+G1 X55 E45 F500        ; purge line — 1/4 bed
+G92 E0                 ; reset extruder
+G1 Z2 F3000            ; lift before print
 ```
 
 **During the first layer:**

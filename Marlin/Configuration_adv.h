@@ -2090,7 +2090,7 @@
   //#define BABYSTEP_DISPLAY_TOTAL          // Display total babysteps since last G28
 
   #if HAS_BED_PROBE
-    #define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
+    //#define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
   #endif
 
   #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
@@ -3764,7 +3764,7 @@
   #define CUSTOM_MENU_MAIN_ONLY_IDLE         // Only show custom menu when the machine is idle
 
   #define MAIN_MENU_ITEM_1_DESC "Level Bed & Save"
-  #define MAIN_MENU_ITEM_1_GCODE "M851 Z-4.275\nM500\nG28\nG29\nM500"
+  #define MAIN_MENU_ITEM_1_GCODE "M851 Z-4.825\nM500\nG28\nG29\nM500"
   #define MAIN_MENU_ITEM_1_CONFIRM           // Show a confirmation dialog before this action
 
   //#define MAIN_MENU_ITEM_2_DESC "Preheat for " PREHEAT_1_LABEL

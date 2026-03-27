@@ -48,7 +48,8 @@ Custom Marlin firmware build for the **Sovol SV05** 3D printer fitted with a **C
 - Levelling always enabled after G28
 - Custom menu: "Level Bed & Save" (homes, probes 5×5 mesh, saves to EEPROM in one step)
 - Babystepping (always available, 0.05mm per click)
-- Model Predictive Control (MPC) temperature — replaces PID for more stable heating
+- Model Predictive Control (MPC) hotend temperature — replaces PID for more stable heating
+- PID bed temperature control — smoother than bang-bang
 - Linear Advance
 - Input Shaping (X & Y)
 - S-Curve Acceleration

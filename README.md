@@ -50,11 +50,13 @@ Custom Marlin firmware build for the **Sovol SV05** 3D printer fitted with a **C
 - Linear Advance
 - Input Shaping (X & Y)
 - S-Curve Acceleration
+- Adaptive Step Smoothing
 - Advanced Pause / Filament Change
+- Filament Runout Sensor (Sprite Pro built-in, pin PA4)
 - Nozzle Park
 - Cancel Objects
 - Print Counter
-- EEPROM settings
+- EEPROM settings (auto-init on error)
 - Emergency Parser
 - Host Action Commands + Prompt Support
 - Thermal runaway protection (hotend + bed)
@@ -343,12 +345,12 @@ M420 S1                ; restore saved bed mesh from EEPROM
 M109 S[hotend_temp]    ; wait for hotend temp
 M190 S[bed_temp]       ; wait for bed temp
 G1 Z5 F3000            ; lift nozzle
-G1 X0 Y-1 F3000        ; move to front edge (outside print area)
+G1 X-1 Y0 F3000        ; move to left edge (outside print area)
 G1 Z0.3 F300           ; drop to purge height
 G92 E0                 ; reset extruder
-G1 X220 E20 F500       ; purge line — left to right (full bed width)
-G1 X0 E40 F500         ; purge line — right to left
-G1 X55 E45 F500        ; purge line — 1/4 bed
+G1 Y220 E20 F500       ; purge line — front to back (full bed length)
+G1 Y0 E40 F500         ; purge line — back to front
+G1 Y55 E45 F500        ; purge line — 1/4 bed
 G92 E0                 ; reset extruder
 G1 Z2 F3000            ; lift before print
 ```

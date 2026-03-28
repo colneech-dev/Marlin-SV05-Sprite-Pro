@@ -2090,7 +2090,7 @@
   //#define BABYSTEP_DISPLAY_TOTAL          // Display total babysteps since last G28
 
   #if HAS_BED_PROBE
-    //#define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
+    #define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
   #endif
 
   #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
@@ -3764,7 +3764,7 @@
   #define CUSTOM_MENU_MAIN_ONLY_IDLE         // Only show custom menu when the machine is idle
 
   #define MAIN_MENU_ITEM_1_DESC "Level Bed & Save"
-  #define MAIN_MENU_ITEM_1_GCODE "M851 Z-3.15\nM500\nG28\nG29\nM500"
+  #define MAIN_MENU_ITEM_1_GCODE "G28\nG29\nM500"
   //#define MAIN_MENU_ITEM_1_CONFIRM           // Show a confirmation dialog before this action
 
   #define MAIN_MENU_ITEM_2_DESC "Prep Z Offset"
@@ -3775,12 +3775,12 @@
   #define MAIN_MENU_ITEM_3_GCODE "M420 S1\nM500"
   //#define MAIN_MENU_ITEM_3_CONFIRM
 
-  //#define MAIN_MENU_ITEM_4_DESC "Heat Bed/Home/Level"
-  //#define MAIN_MENU_ITEM_4_GCODE "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nG28\nG29"
+  #define MAIN_MENU_ITEM_4_DESC "MPC Autotune"
+  #define MAIN_MENU_ITEM_4_GCODE "M306 T"
   //#define MAIN_MENU_ITEM_4_CONFIRM
 
-  //#define MAIN_MENU_ITEM_5_DESC "Home & Info"
-  //#define MAIN_MENU_ITEM_5_GCODE "G28\nM503"
+  #define MAIN_MENU_ITEM_5_DESC "Bed PID Tune"
+  #define MAIN_MENU_ITEM_5_GCODE "M303 E-1 S60 C8 U1\nM500"
   //#define MAIN_MENU_ITEM_5_CONFIRM
 #endif
 

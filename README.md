@@ -22,11 +22,11 @@ Custom Marlin firmware build for the **Sovol SV05** 3D printer fitted with a **C
 | Setting | Value | Notes |
 |---|---|---|
 | Firmware | Marlin 2.1.2.7 | |
-| Board | `BOARD_CREALITY_V4` | V4.2.2 STM32F103RE |
+| Board | `BOARD_CREALITY_V422` | V4.2.2 STM32F103RE (SD card sticker: T8) |
 | Thermistor | Type 5 (ATC Semitec 104GT-2) | Sprite Pro 300°C version (thick red wiring) |
 | Max hotend temp | 300°C | |
-| Hotend PID | Kp 17.62 / Ki 1.42 / Kd 54.63 | Tuned via M303 E0 S210 C15 on Sprite Pro |
-| Bed heater | Bang-bang + BED_LIMIT_SWITCHING | Appropriate for large 235×235 bed |
+| Hotend temp control | MPC (Model Predictive Control) | Tuned via M306 T autotune |
+| Bed PID | Kp 273.71 / Ki 52.64 / Kd 948.85 | Tuned via M303 E-1 S60 C8 |
 | E-steps | 439.45 | Starting point — calibrate after flashing |
 | Probe X offset | -37.5 mm | Measured by centering probe over bed |
 | Probe Y offset | +6.2 mm | Measured by centering probe over bed |
@@ -46,8 +46,14 @@ Custom Marlin firmware build for the **Sovol SV05** 3D printer fitted with a **C
 - Auto Bed Levelling (bilinear 5×5 mesh, double-probing for accuracy)
 - Probe-assisted bed tramming (CR Touch guides corner adjustment)
 - Levelling always enabled after G28
-- Custom menu: "Level Bed & Save" (homes, probes 5×5 mesh, saves to EEPROM in one step)
-- Babystepping (always available, 0.05mm per click)
+- Custom menu with 6 items:
+  1. **Full Autotune** — MPC hotend + bed PID autotune, saves to EEPROM
+  2. **Level Bed & Save** — homes, probes 5×5 mesh, saves to EEPROM
+  3. **Paper Test** — disables mesh, homes, moves to centre at Z=0 for Z offset calibration
+  4. **Save Z Offset** — re-enables mesh, saves Z offset to EEPROM
+  5. **————** — separator (prevents accidental Reset EEPROM)
+  6. **Reset EEPROM** — full factory reset: resets EEPROM, runs full autotune, re-levels bed (confirm required)
+- Babystepping (always available, 0.05mm per click, updates M851 Z offset directly)
 - Model Predictive Control (MPC) hotend temperature — replaces PID for more stable heating
 - PID bed temperature control — smoother than bang-bang
 - Linear Advance
@@ -120,7 +126,11 @@ You will need a USB terminal to send G-code commands. Options:
 
 **This must be the first thing you do.** Old EEPROM data from a previous firmware version will override the new defaults and cause erratic behaviour — wrong steps/mm, bad PID values, incorrect probe offsets.
 
-Connect via USB terminal and send:
+**Option A — Custom menu (easiest):**
+
+From the printer LCD, open the custom menu and select **Reset EEPROM**. Confirm when prompted. This will reset EEPROM, run full autotune, and re-level the bed automatically — skip straight to Step 6 (Z Offset) after this.
+
+**Option B — Via USB terminal:**
 
 ```gcode
 M502   ; restore all settings to firmware defaults
@@ -132,43 +142,29 @@ You should see the terminal output a list of settings. If you see `echo:SD init 
 
 ---
 
-### Step 3 — PID Autotune (Hotend)
+### Step 3 — Temperature Autotune
 
-The Sprite Pro has a different heater cartridge and heater block to the stock SV05 hotend. The default PID values will not match and can cause thermal runaway protection to trip mid-print.
+This firmware uses **MPC (Model Predictive Control)** for the hotend instead of PID. MPC models the thermal behaviour of the heater block and adjusts power predictively — it handles temperature changes more smoothly than PID.
 
-Heat the hotend and run 15 cycles of autotune at your most common print temperature:
+**Option A — Custom menu (easiest):**
 
+Select **Full Autotune** from the custom menu. It runs MPC autotune on the hotend, PID autotune on the bed, and saves everything automatically. Takes 20–30 minutes.
+
+**Option B — Via USB terminal:**
+
+Hotend (MPC):
 ```gcode
-M303 E0 S210 C15   ; autotune at 210°C for 15 cycles (~5 minutes)
+M306 T   ; MPC autotune — heats and cools the hotend to model thermal properties
+M500     ; save result
 ```
 
-Watch the terminal — when it finishes you will see a line like:
-
-```
-Kp: 28.72  Ki: 2.54  Kd: 81.20
-```
-
-Copy those values and save them:
-
+Bed PID:
 ```gcode
-M301 P28.72 I2.54 D81.20
+M303 E-1 S60 C8 U1   ; autotune bed at 60°C for 8 cycles, auto-apply result
 M500
 ```
 
-> If you print at significantly different temperatures (e.g. ABS at 250°C), run autotune again at that temperature too. Use whichever PID values give you the most stable temperature during actual printing.
-
-**Bed PID** (optional but recommended):
-
-```gcode
-M303 E-1 S60 C8   ; autotune bed at 60°C for 8 cycles
-```
-
-Save with:
-
-```gcode
-M304 P<Kp> I<Ki> D<Kd>
-M500
-```
+> Re-run autotune if you change the hotend, heater block, thermistor, or heater cartridge.
 
 ---
 
@@ -329,11 +325,11 @@ Alternatively, print the tower with shaping enabled and look for the layer where
 
 Before starting your first real print:
 
-- [ ] EEPROM reset done (`M502` + `M500`)
-- [ ] PID autotune done and saved
+- [ ] EEPROM reset done (custom menu **Reset EEPROM**, or `M502` + `M500`)
+- [ ] Temperature autotune done (custom menu **Full Autotune**, or `M306 T` + `M303 E-1 S60 C8 U1` + `M500`)
 - [ ] Bed trammed (all corners within 0.1 mm)
-- [ ] Bed mesh run (`G29` + `M500`)
-- [ ] Z offset calibrated
+- [ ] Bed mesh run (custom menu **Level Bed & Save**, or `G29` + `M500`)
+- [ ] Z offset calibrated (custom menu **Paper Test** → babystep → **Save Z Offset**)
 - [ ] E-steps verified
 - [ ] Filament loaded and primed
 - [ ] Slicer start G-code includes `G28` and `G29` (or `M420 S1` to restore saved mesh)

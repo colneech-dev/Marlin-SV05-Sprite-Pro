@@ -3779,9 +3779,13 @@
   #define MAIN_MENU_ITEM_4_GCODE "M117 Saving...\nM420 S1\nM500\nM117 Z offset saved!"
   //#define MAIN_MENU_ITEM_4_CONFIRM
 
-  //#define MAIN_MENU_ITEM_5_DESC
-  //#define MAIN_MENU_ITEM_5_GCODE
+  #define MAIN_MENU_ITEM_5_DESC "------------"
+  #define MAIN_MENU_ITEM_5_GCODE "M117 Ready"
   //#define MAIN_MENU_ITEM_5_CONFIRM
+
+  #define MAIN_MENU_ITEM_6_DESC "Reset EEPROM"
+  #define MAIN_MENU_ITEM_6_GCODE "M117 Resetting EEPROM...\nM502\nM500\nM117 Hotend autotune...\nM306 T\nM117 Bed autotune...\nM303 E-1 S60 C8 U1\nM117 Homing...\nG28\nM117 Probing bed...\nG29\nM117 Saving...\nM500\nM117 Done! Now do Paper Test"
+  #define MAIN_MENU_ITEM_6_CONFIRM
 #endif
 
 // @section custom config menu

@@ -3772,7 +3772,7 @@
   //#define MAIN_MENU_ITEM_2_CONFIRM
 
   #define MAIN_MENU_ITEM_3_DESC "Paper Test"
-  #define MAIN_MENU_ITEM_3_GCODE "M117 Disabling mesh...\nM420 S0\nM117 Homing...\nG28\nM117 Moving to centre...\nG0 X110 Y110 F3000\nM117 Lowering nozzle...\nG0 Z0 F300\nM0 Adjust Z with knob then select Save Z Offset"
+  #define MAIN_MENU_ITEM_3_GCODE "M117 Heating bed...\nM190 S60\nM117 Disabling mesh...\nM420 S0\nM117 Homing...\nG28\nM117 Moving to centre...\nG0 X110 Y110 F3000\nM117 Lowering nozzle...\nG0 Z0 F300\nM0 Bed hot. Adjust Z then select Save Z Offset"
   //#define MAIN_MENU_ITEM_3_CONFIRM
 
   #define MAIN_MENU_ITEM_4_DESC "Save Z Offset"
